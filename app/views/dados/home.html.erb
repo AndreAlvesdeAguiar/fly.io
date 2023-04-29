@@ -30,16 +30,46 @@
 			ctx.lineCap = "round";
 			ctx.shadowColor = "#0000ff";
 			ctx.shadowBlur = 20;
-			var mouse = {x: 0, y: 0};
+			var fixedPoint = {x: canvas.width/2, y: 0};
+			var mouse = {x: 0, y: 0};	
+			var frequency = 0.2;
+			var amplitude = 15;
+
+		
 			document.addEventListener("mousemove", function(event) {
 				mouse.x = event.clientX;
 				mouse.y = event.clientY;
+			
 			});
 			function drawLine() {
 				ctx.clearRect(0, 0, canvas.width, canvas.height);
 				ctx.beginPath();
-        ctx.moveTo(canvas.width/2, 0);
+				var endPoint = {x: mouse.x, y: mouse.y};
+
+				ctx.moveTo(fixedPoint.x, fixedPoint.y);
+				var dx = endPoint.x - fixedPoint.x;
+				var dy = endPoint.y - fixedPoint.y;
+				var distance = Math.sqrt(dx*dx + dy*dy);
+				var segments = Math.floor(distance/20);
+				var segmentLength = distance/segments;
+				var angle = Math.atan2(dy, dx);
+				var sin = Math.sin(angle);
+				var cos = Math.cos(angle);
+				var curX = fixedPoint.x;
+				var curY = fixedPoint.y;
+				var distFactor = Math.min(1, distance/200); // fator para amplitude aumentar com a distância
+       			var ampFactor = 1 + distFactor * 2; // valor para multiplicar a amplitude
+
+			
+				for (var i = 0; i < segments; i++) {
+					curX += segmentLength * cos;
+					curY += segmentLength * sin;
+					curY += amplitude * Math.sin(i * frequency + angle * 2);
+					
+					ctx.lineTo(curX, curY);
+				}
 				ctx.lineTo(mouse.x, mouse.y);
+
 				ctx.stroke();
 				requestAnimationFrame(drawLine);
 			}
