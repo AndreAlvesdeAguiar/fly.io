@@ -63,6 +63,32 @@
   <%= render partial: 'aba3' %>  
 </div>
 
+<!-- Opção Dark Mode -->
+
+<body class="light-mode">
+<style>
+  /* Estilos para o modo claro (light mode) */
+  body.light-mode {
+    background-color: #f1f1f1;
+    color: #000;
+  }
+  
+  /* Estilos para o modo escuro (dark mode) */
+  body.dark-mode {
+    background-color: #1a1a1a;
+    color: #fff;
+  }
+</style>
+<button onclick="toggleDarkMode()">Toggle Dark Mode</button>
+<script>
+  function toggleDarkMode() {
+    var body = document.getElementsByTagName("body")[0];
+    body.classList.toggle("dark-mode");
+  }
+</script>
+
+<!-- Opção Dark Mode -->
+
 <script>
   // Função para abrir a aba atual e fechar as outras abas
   function openTab(evt, tabName) {
