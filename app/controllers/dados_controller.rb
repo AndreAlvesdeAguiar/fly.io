@@ -29,7 +29,7 @@ class DadosController < ActionController::Base
       labels << dado['data']
       valores << dado['valor']
     end
-  
+
     @dados_grafico = {
       labels: labels,
       datasets: [
@@ -44,6 +44,35 @@ class DadosController < ActionController::Base
     }
   
     render 'dados/grafico'
+  end
+
+  def grafico2 
+ 
+    dados = ApiService.busca_dados(12)
+    dados_json = dados.to_json
+    dados = JSON.parse(dados_json)
+
+    labels = []
+    valores = []
+    dados.each do |dado|
+      labels << dado['data']
+      valores << dado['valor']
+    end
+
+    @dados_grafico2 = {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Valores',
+          data: valores,
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          borderColor: 'rgba(255, 99, 132, 1)',
+          borderWidth: 1
+        }
+      ]
+    }
+  
+    render 'dados/grafico2'
   end
 
   def home
